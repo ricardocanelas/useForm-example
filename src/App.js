@@ -1,7 +1,7 @@
 import useForm from './useForm'
 
 function App() {
-  const { values, errors, touched, handleChange, handleSubmit } = useForm({
+  const { values, errors, touched, isSubmitting, handleChange, handleSubmit } = useForm({
     initialValues: {
       firstname: '',
       lastname: '',
@@ -15,8 +15,12 @@ function App() {
         },
       },
     },
-    onSubmit: () => {
+    onSubmit: (bag) => {
       console.log('Ready to send to backend...', { values })
+      setInterval(() => {
+        // bag.setIsSubmitting(false)
+        bag.reset()
+      }, 3000)
     },
   })
 
@@ -32,7 +36,9 @@ function App() {
           <label>Last Name:</label>
           <input type="text" name="lastname" value={values.lastname} onChange={handleChange} />
         </div>
-        <button type="submit">submit</button>
+        <button type="submit" disabled={isSubmitting}>
+          submit
+        </button>
       </form>
       <div className="debug">
         <div>
