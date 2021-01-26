@@ -5,6 +5,7 @@ const useForm = ({ schema, initialValues, onSubmit }) => {
   const [state, setState] = useState(initialValues || {})
   const [touched, setTouched] = useState({})
   const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const setValue = (name, value) => {
     setState((prev) => ({
@@ -54,15 +55,26 @@ const useForm = ({ schema, initialValues, onSubmit }) => {
     )
 
     if (getErrors().length === 0) {
-      onSubmit(e)
+      setIsSubmitting(true)
+      onSubmit({ setIsSubmitting, reset }, e)
     }
+  }
+
+  const reset = () => {
+    setState(initialValues)
+    setTouched({})
+    setErrors({})
+    setIsSubmitting(false)
   }
 
   return {
     values: state,
     errors,
     touched,
+    isSubmitting,
+    setIsSubmitting,
     setValue,
+    reset,
     handleChange,
     handleSubmit,
   }
