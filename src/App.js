@@ -4,6 +4,7 @@ function App() {
   const { values, errors, touched, handleChange, handleSubmit } = useForm({
     initialValues: {
       firstname: '',
+      lastname: '',
     },
     schema: {
       firstname: {
@@ -26,6 +27,10 @@ function App() {
           <label>First Name:</label>
           <input type="text" name="firstname" value={values.firstname} onChange={handleChange} />
           {errors.firstname && touched.firstname && <span className="invalid">{errors.firstname}</span>}
+        </div>
+        <div className="flex flex-col">
+          <label>Last Name:</label>
+          <input type="text" name="lastname" value={values.lastname} onChange={handleChange} />
         </div>
         <button type="submit">submit</button>
       </form>
