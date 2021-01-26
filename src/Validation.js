@@ -35,6 +35,8 @@ const validations = {
 }
 
 export const isInvalid = (rules, value) => {
+  if (!rules) return undefined
+
   const errors = []
   let result = undefined
 

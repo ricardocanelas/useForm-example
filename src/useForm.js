@@ -7,10 +7,6 @@ const useForm = ({ schema, initialValues, onSubmit }) => {
   const [errors, setErrors] = useState({})
 
   const setValue = (name, value) => {
-    setTouched((prev) => ({
-      ...prev,
-      [name]: true,
-    }))
     setState((prev) => ({
       ...prev,
       [name]: value,
@@ -35,13 +31,6 @@ const useForm = ({ schema, initialValues, onSubmit }) => {
           return acc
         }, {})
       )
-      setTouched((prev) => ({
-        ...prev,
-        ...temp.reduce((acc, cur) => {
-          acc[cur.name] = true
-          return acc
-        }, {}),
-      }))
     }
 
     return temp
@@ -50,11 +39,20 @@ const useForm = ({ schema, initialValues, onSubmit }) => {
   const handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
+    if (!name) return null
     setValue(name, value)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    setTouched(
+      Object.keys(state).reduce((acc, curKey) => {
+        acc[curKey] = true
+        return acc
+      }, {})
+    )
+
     if (getErrors().length === 0) {
       onSubmit(e)
     }
